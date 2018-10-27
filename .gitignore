@@ -2,12 +2,7 @@
 node_modules
 npm-debug.log.*
 
-dist
-lib
 coverage
-
-**/dist
-**/build
 
 .tmp
 *.swo
