@@ -1,13 +1,6 @@
 import { effects, addEffect } from './effects'
 
 export const options = {
-  // global initial state
-  // initialState: undefined,
-
-  // Should be one of ['browser', 'hash', 'memory']
-  // Learn more: https://github.com/ReactTraining/history/blob/master/README.md
-  historyMode: 'browser',
-
   // A list of the standard Redux middleware
   middlewares: [],
 
@@ -22,10 +15,7 @@ export const options = {
 
   // An overwrite of the existing effect handler
   addEffect: addEffect(effects),
-
 }
-
-const historyModes = ['browser', 'hash', 'memory']
 
 // Can be called multiple times, ie. after load an async component that has
 // exported standard Redux `reducer`s that need to be `replaceReducer` for the
@@ -38,14 +28,9 @@ const historyModes = ['browser', 'hash', 'memory']
 export default function defaults(opts = {}) {
 
   const {
-    historyMode,
     middlewares,
     addEffect
   } = opts
-
-  if (historyMode && !historyModes.includes(historyMode)) {
-    throw new Error(`historyMode "${historyMode}" is invalid, must be one of ${historyModes.join(', ')}!`)
-  }
 
   if (middlewares && !Array.isArray(middlewares)) {
     throw new Error(`middlewares "${middlewares}" is invalid, must be an Array!`)

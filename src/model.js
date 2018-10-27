@@ -1,10 +1,11 @@
 import { resolveReducers, addActions } from './actions'
 
-const isObject = target => Object.prototype.toString.call(target) === '[object Object]'
+const isObject = target =>
+  Object.prototype.toString.call(target) === '[object Object]'
 
 export const models = []
 
-export default function model(m) {
+export default function model (m) {
   const { name, reducers, initialState, effects } = validateModel(m)
 
   const reducer = getReducer(resolveReducers(name, reducers), initialState)
@@ -18,19 +19,17 @@ export default function model(m) {
   return toAdd
 }
 
-function validateModel(m = {}) {
+function validateModel (m = {}) {
   const { name, reducers, effects } = m
 
   if (!name || typeof name !== 'string') {
     throw new Error(`Model name must be a valid string!`)
   }
 
-  if (name === 'routing') {
-    throw new Error(`Model name can not be "routing", it is used by react-router-redux!`)
-  }
-
   if (models.find(item => item.name === name)) {
-    throw new Error(`Model "${name}" has been created, please select another name!`)
+    throw new Error(
+      `Model "${name}" has been created, please select another name!`
+    )
   }
 
   if (reducers !== undefined && !isObject(reducers)) {
@@ -47,10 +46,8 @@ function validateModel(m = {}) {
   return m
 }
 
-
 // If initialState is not specified, then set it to null
-function getReducer(reducers, initialState = null) {
-
+function getReducer (reducers, initialState = null) {
   return (state = initialState, action) => {
     if (typeof reducers[action.type] === 'function') {
       return reducers[action.type](state, action.data)
@@ -59,17 +56,16 @@ function getReducer(reducers, initialState = null) {
   }
 }
 
-function filterReducers(reducers) {
+function filterReducers (reducers) {
   if (!reducers) {
     return reducers
   }
 
-  return Object.keys(reducers)
-    .reduce((acc, action) => {
-      // Filter out non-function entries
-      if (typeof reducers[action] === 'function') {
-        acc[action] = reducers[action]
-      }
-      return acc
-    }, {})
+  return Object.keys(reducers).reduce((acc, action) => {
+    // Filter out non-function entries
+    if (typeof reducers[action] === 'function') {
+      acc[action] = reducers[action]
+    }
+    return acc
+  }, {})
 }
